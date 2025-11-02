@@ -1,0 +1,1 @@
+# ter-yandex-vm-module
