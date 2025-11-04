@@ -41,7 +41,11 @@ resource "yandex_compute_instance" "vm" {
     subnet_id          = element(var.subnet_ids, count.index)
     security_group_ids = var.security_group_ids
     nat                = var.public_ip
-    ip_address         = var.known_internal_ip != "" ? var.known_internal_ip : null
+    ip_address = var.known_internal_ip != "" ? format(
+      "%s.%d",
+      join(".", slice(split(".", var.known_internal_ip), 0, 3)),
+      tonumber(split(".", var.known_internal_ip)[3]) + count.index
+    ) : null
   }
 
   metadata = {
